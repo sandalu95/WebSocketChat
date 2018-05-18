@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>WebSockets</title>
+	<title>SocketMultiChat</title>
 </head>
 <body>
 	<input type="text" name="msg" id="msg">
@@ -9,13 +9,14 @@
 	<div id="msgbox"></div> 
 </body>
 <script type="text/javascript">
-	var sock=new WebSocket("ws://localhost:5002");
+	var sock=new WebSocket("ws://localhost:5001");
 	sock.onmessage=function(event){
 		console.log(event);
 		document.getElementById("msgbox").innerHTML+=event.data+"<br>";
 	}
+	
 	document.querySelector('button').onclick=function(){
 		sock.send(document.getElementById("msg").value);
 	};
-	</script>
+</script>
 </html>
