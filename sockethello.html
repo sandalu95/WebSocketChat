@@ -4,18 +4,17 @@
 	<title>WebSockets</title>
 </head>
 <body>
-	<input type="text" name="msg" id="msg">
-	<button>Send</button>
-	<div id="msgbox"></div> 
-</body>
-<script type="text/javascript">
-	var sock=new WebSocket("ws://localhost:5002");
-	sock.onmessage=function(event){
-		console.log(event);
-		document.getElementById("msgbox").innerHTML+=event.data+"<br>";
-	}
-	document.querySelector('button').onclick=function(){
-		sock.send(document.getElementById("msg").value);
-	};
+	<script type="text/javascript">
+		var sock=new WebSocket("wss://echo.websocket.org");
+		sock.onopen=function(event){
+			alert('Socket Connected successfully');
+			setTimeout(function(){
+				sock.send("Hey there");
+			},1000);
+		};
+		sock.onmessage=function(event){
+			console.log(event);
+		}
 	</script>
+</body>
 </html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SocketMultiChat</title>
+	<style type="text/css">
+	#msgbox{
+		width: 500px;
+		height: 500px;
+	    border: 2px solid green;
+	    margin-bottom: 10px;
+	    margin-left: 500px;
+	    margin-top: 50px;
+	}
+	#inputarea{
+		padding-left: 500px;
+	}
+	#msg{
+		width: 400px;
+		height: 20px;
+	}
+	#btn{
+		width: 100px;
+		background-color: green;
+		color: white;
+		height: 25px;
+	}
+    
+	</style>
+</head>
+<body>
+	<h1 style="color: green; font-weight: bold; text-align: center;">We Chat...</h1>
+	<div id="msgbox"></div> 
+	<div id="inputarea">
+	<input type="text" name="msg" id="msg">
+	<button id="btn">Send</button>
+	</div>
+</body>
+<script type="text/javascript">
+	var name=prompt('What is your name fella?');
+	var sock=new WebSocket("ws://localhost:5002");
+	sock.onopen=function(){
+		sock.send(JSON.stringify({
+			type:"name",
+			data:name
+		}));
+	}
+	sock.onmessage=function(event){
+		console.log(event);
+		var json=JSON.parse(event.data);
+		document.getElementById("msgbox").innerHTML+=json.name+": "+json.data+"<br>";
+	}
+	
+	document.querySelector('button').onclick=function(){
+		
+		sock.send(JSON.stringify({
+			type:"message",
+			data:document.getElementById("msg").value
+		}));
+		document.getElementById("msgbox").innerHTML+="You : "+document.getElementById("msg").value+"<br>";
+		document.getElementById("msg").value="";
+	};
+</script>
+</html>
